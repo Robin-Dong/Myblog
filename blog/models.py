@@ -40,7 +40,7 @@ class Entry(models.Model):
     modified_time = models.DateTimeField('修改时间', auto_now=True)
 
     def __str__(self):
-        return self.title
+        return str(self.id)
 
     class Meta:
         ordering = ['-created_time']
@@ -48,7 +48,7 @@ class Entry(models.Model):
         verbose_name_plural = verbose_name
 
     def get_absolute_url(self):
-        return reverse('blog:blog_detail',kwargs={'blog_id': self.id})
+        return reverse('blog:blog_detail', kwargs={'blog_id': self.id})
 
     def increase_visiting(self):
         self.visiting += 1

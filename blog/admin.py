@@ -4,7 +4,7 @@ from . import models
 
 
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'visiting', 'created_time', 'modified_time' ]
+    list_display = ['title', 'author', 'visiting', 'created_time', 'modified_time']
 
 
 admin.site.register(models.Category)

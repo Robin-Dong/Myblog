@@ -37,7 +37,7 @@
         <ul class="list-group">
             {% for category in category_list %}
             <li class="list-group-item">
-                <a herf="{% url 'blog:blog_category' category.id %}">{{category.name}}</a>
+                <a href="{% url 'blog:blog_category' category.id %}">{{category.name}}</a>
                 <span class="badge">{% get_entry_count_of_category category.name %}</span>
             </li>
             {% endfor %}
