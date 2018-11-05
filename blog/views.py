@@ -9,7 +9,8 @@ from django_comments import models as comment_models
 
 # Create your views here.
 
-def make_paginator(objects, page, num=3):
+
+def make_paginator(objects, page, num=5):
     paginator = Paginator(objects, num)
     try:
         objects_list = paginator.page(page)

@@ -1,6 +1,6 @@
 {% extends 'blog/base.html' %}
 
-{% block title %}博客首页{% endblock %}
+{% block title %}Robin's blog{% endblock %}
 {% block content %}
 
 <div class="page-welcome-header">
@@ -11,8 +11,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
+            <ul class="list-group" style="margin-top:30px;">
             {% for entry in entry_list %}
-                <h2><a href="{{entry.get_absolute_url }}"> {{ entry.title }}</a></h2>
+                <li class="list-group-item" >
+                <h3><a href="{{entry.get_absolute_url }}"> {{ entry.title }}</a></h3>
                 <br>
                 {% if entry.img %}
                     <img src="{{ entry.img.url }}" width=40% />
@@ -23,16 +25,19 @@
                  <p>{{ entry.body | truncatechars:180 }}</p>
                 {% endif %}
                 <p>
-                    <span>作者：{{ entry.author }}</span>
-                    <span>&nbsp&nbsp&nbsp&nbsp发布时间:{{ entry.created_time }}</span>
-                    <span>&nbsp&nbsp&nbsp&nbsp阅读数:{{ entry.visiting }}</span>
+                    <span><i class="glyphicon glyphicon-user"></i>&nbsp{{ entry.author }}</span>
+                    <span>&nbsp&nbsp&nbsp&nbsp
+                        <i class="glyphicon glyphicon-time"></i>&nbsp{{ entry.created_time }}</span>
+                    <span>&nbsp&nbsp&nbsp&nbsp<i class="glyphicon glyphicon-eye-open"></i>&nbsp{{ entry.visiting }}</span>
                 </p>
+                </li>
             {% endfor %}
+            </ul>
             <!--/.pagination-->
             <div id="paginator" style="text-align: center;">
                 <ul class="pagination">
                     {% if entry_list.has_previous %}
-                        <li><a href="?page={{ entry_list.previous_page_number }}"
+                        <li><a href="?page={{ entry_list.previous_page_number }}">
                             <i class="glyphicon glyphicon-chevron-left"></i>前一页</a></li>
                     {% endif %}
 
