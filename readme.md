@@ -1,1 +1,1 @@
-## My blog website build with Django + Bootstrp
+## My blog website build with Django + Bootstrap
