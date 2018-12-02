@@ -35,7 +35,7 @@ handler404 = blog_views.page_not_found
 handler500 = blog_views.page_error
 
 urlpatterns = [
-    path('', blog_views.index),
+    path('', blog_views.home),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
     path('latest/feed/', LatestEntriesFeed()),  #rss订阅

@@ -9,7 +9,7 @@
             {% for entry in recent_entry_list %}
                 <div class="list-group-item">
                     <a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>
-                    <div>{{ entry.author }} 发表于：{{ entry.created_time|date:"Y年m月d日" }}</div>
+                    <div>{{ entry.author }} 发布于：{{ entry.created_time|date:"Y年m月d日" }}</div>
                 </div>
             {% endfor %}
         </ul>

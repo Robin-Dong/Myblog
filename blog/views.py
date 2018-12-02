@@ -2,10 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from . import models
 import markdown
 import pygments
-from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django_comments.models import Comment
 from django_comments import models as comment_models
+
 
 # Create your views here.
 
@@ -19,6 +20,7 @@ def make_paginator(objects, page, num=5):
     except EmptyPage:
         objects_list = paginator.page(paginator.num_pages)
     return objects_list, paginator
+
 
 def pagination_data(paginator, page):
     """
@@ -127,6 +129,11 @@ def pagination_data(paginator, page):
     }
     return data
 
+
+def home(request):
+    return render(request, 'blog/home.html', locals())
+
+
 def index(request):
     entries = models.Entry.objects.all()
     page = request.GET.get('page', 1)
@@ -136,7 +143,7 @@ def index(request):
 
 
 def detail(request, blog_id):
-    #entry = models.Entry.objects.get(id=blog_id)
+    # entry = models.Entry.objects.get(id=blog_id)
     entry = get_object_or_404(models.Entry, id=blog_id)
     md = markdown.Markdown(extensions=[
         'markdown.extensions.extra',
@@ -164,7 +171,7 @@ def detail(request, blog_id):
 
 
 def category(request, category_id):
-    #c = models.Category.objects.get(id=category_id)
+    # c = models.Category.objects.get(id=category_id)
     c = get_object_or_404(models.Category, id=category_id)
     entries = models.Entry.objects.filter(category=c)
     page = request.GET.get('page', 1)
@@ -174,7 +181,7 @@ def category(request, category_id):
 
 
 def tag(request, tag_id):
-    #t = models.Tag.objects.get(id=tag_id)
+    # t = models.Tag.objects.get(id=tag_id)
     t = get_object_or_404(models.Tag, id=tag_id)
     if t.name == "全部":
         entries = models.Entry.objects.all()
@@ -200,8 +207,8 @@ def search(request):
     return render(request, 'blog/index.html', locals())
 
 
-def archives(request,year, month):
-    entries = models.Entry.objects.filter(created_time__year=year,created_time__month=month)
+def archives(request, year, month):
+    entries = models.Entry.objects.filter(created_time__year=year, created_time__month=month)
     page = request.GET.get('page', 1)
     entry_list, paginator = make_paginator(entries, page)
     page_data = pagination_data(paginator, page)
@@ -229,6 +236,7 @@ def reply(request, comment_id):
     parent_comment = get_object_or_404(comment_models.Comment, id=comment_id)
     return render(request, 'blog/reply.html', locals())
 
+
 def login(request):
     import requests
     import json
@@ -237,14 +245,14 @@ def login(request):
     if code is None:
         return redirect('/')
 
-    access_token_url = 'https://api.weibo.com/oauth2/access_token?client_id=%s&client_secret=%s&grant_type=authorization_code&redirect_uri=http://127.0.0.1:8000/login&code=%s'\
-                        %(settings.CLIENT_ID, settings.APP_SECRET, code)
+    access_token_url = 'https://api.weibo.com/oauth2/access_token?client_id=%s&client_secret=%s&grant_type=authorization_code&redirect_uri=http://127.0.0.1:8000/login&code=%s' \
+                       % (settings.CLIENT_ID, settings.APP_SECRET, code)
 
     ret = requests.post(access_token_url)
 
-    data = ret.text    #微博返回的数据是json格式的
+    data = ret.text  # 微博返回的数据是json格式的
 
-    data_dict = json.loads(data)   #转换成python字典格式
+    data_dict = json.loads(data)  # 转换成python字典格式
 
     token = data_dict['access_token']
     uid = data_dict['uid']
@@ -256,7 +264,7 @@ def login(request):
     user_info_url = 'https://api.weibo.com/2/users/show.json?access_token=%s&uid=%s' % (token, uid)
     user_info = requests.get(user_info_url)
 
-    user_info_dict = json.loads(user_info.text)   #获取微博用户的信息
+    user_info_dict = json.loads(user_info.text)  # 获取微博用户的信息
 
     request.session['screen_name'] = user_info_dict['screen_name']
     request.session['profile_image_url'] = user_info_dict['profile_image_url']
